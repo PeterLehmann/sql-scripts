@@ -2,6 +2,7 @@ SELECT
 dm_mid.database_id AS DatabaseID,
 dm_migs.avg_user_impact*(dm_migs.user_seeks+dm_migs.user_scans) Avg_Estimated_Impact,
 dm_migs.last_user_seek AS Last_User_Seek,
+s.name as [SchemasName], 
 OBJECT_NAME(dm_mid.OBJECT_ID,dm_mid.database_id) AS [TableName],
 'CREATE INDEX [IX_' + OBJECT_NAME(dm_mid.OBJECT_ID,dm_mid.database_id) + '_'
 + REPLACE(REPLACE(REPLACE(ISNULL(dm_mid.equality_columns,''),', ','_'),'[',''),']','') +
@@ -23,6 +24,8 @@ INNER JOIN sys.dm_db_missing_index_group_stats dm_migs
 ON dm_migs.group_handle = dm_mig.index_group_handle
 INNER JOIN sys.dm_db_missing_index_details dm_mid
 ON dm_mig.index_handle = dm_mid.index_handle
+inner join sys.tables t on t.object_id = dm_mid.object_id
+inner join sys.schemas s on t.schema_id = s.schema_id
 WHERE dm_mid.database_ID = DB_ID()
-ORDER BY Avg_Estimated_Impact DESC
+ORDER BY s.name,  Avg_Estimated_Impact DESC
 GO
