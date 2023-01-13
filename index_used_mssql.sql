@@ -18,6 +18,7 @@ WHERE
     AND
     indexes. is_unique = 0 -- This condition excludes unique key constarint
 	AND indexes.name is not null
+	and sys.dm_db_index_usage_stats.database_id = db_id()
 ORDER BY
 	Schema_Name,
     Table_name,
