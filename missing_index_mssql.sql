@@ -18,7 +18,7 @@ END
 '' END
 + ISNULL (dm_mid.inequality_columns, '')
 + ')'
-+ ISNULL (' INCLUDE (' + dm_mid.included_columns + ')', '') AS Create_Statement
++ ISNULL (' INCLUDE (' + dm_mid.included_columns + ') with (online = on)', ' with (online = on)') AS Create_Statement
 FROM sys.dm_db_missing_index_groups dm_mig
 INNER JOIN sys.dm_db_missing_index_group_stats dm_migs
 ON dm_migs.group_handle = dm_mig.index_group_handle
