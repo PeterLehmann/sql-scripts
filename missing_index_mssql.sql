@@ -12,7 +12,7 @@ ELSE ''
 END
 + REPLACE(REPLACE(REPLACE(ISNULL(dm_mid.inequality_columns,''),', ','_'),'[',''),']','')
 + ']'
-+ ' ON ' + dm_mid.statement
++ ' ON ' + replace(dm_mid.statement, '['+DB_NAME(db_id()) +'].', '')
 + ' (' + ISNULL (dm_mid.equality_columns,'')
 + CASE WHEN dm_mid.equality_columns IS NOT NULL AND dm_mid.inequality_columns IS NOT NULL THEN ',' ELSE
 '' END
